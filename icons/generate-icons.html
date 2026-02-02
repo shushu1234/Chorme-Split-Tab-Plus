@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>生成 Split Tab Plus 图标</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #1a1a1a;
+      color: #fff;
+      padding: 40px;
+      text-align: center;
+    }
+    h1 { margin-bottom: 30px; }
+    .icons { display: flex; justify-content: center; gap: 30px; margin: 30px 0; }
+    .icon-item { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    canvas { background: #333; border-radius: 8px; }
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      background: #4285f4;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 10px 5px;
+    }
+    button:hover { background: #5a95f5; }
+    .instructions {
+      margin-top: 40px;
+      padding: 20px;
+      background: #2a2a2a;
+      border-radius: 8px;
+      text-align: left;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    code {
+      background: #333;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎨 Split Tab Plus 图标生成器</h1>
+  
+  <div class="icons">
+    <div class="icon-item">
+      <canvas id="icon16" width="16" height="16"></canvas>
+      <span>16x16</span>
+      <button onclick="download('icon16')">下载</button>
+    </div>
+    <div class="icon-item">
+      <canvas id="icon48" width="48" height="48"></canvas>
+      <span>48x48</span>
+      <button onclick="download('icon48')">下载</button>
+    </div>
+    <div class="icon-item">
+      <canvas id="icon128" width="128" height="128"></canvas>
+      <span>128x128</span>
+      <button onclick="download('icon128')">下载</button>
+    </div>
+  </div>
+  
+  <button onclick="downloadAll()">📦 下载所有图标</button>
+  
+  <div class="instructions">
+    <h3>📝 使用说明</h3>
+    <ol>
+      <li>点击"下载所有图标"按钮</li>
+      <li>将下载的图标文件放到 <code>icons/</code> 文件夹中</li>
+      <li>确保文件名为 <code>icon16.png</code>、<code>icon48.png</code>、<code>icon128.png</code></li>
+    </ol>
+  </div>
+
+  <script>
+    function drawIcon(canvas) {
+      const size = canvas.width;
+      const ctx = canvas.getContext('2d');
+      
+      // 清空画布
+      ctx.clearRect(0, 0, size, size);
+      
+      // 背景渐变
+      const gradient = ctx.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, '#4285f4');
+      gradient.addColorStop(1, '#1a73e8');
+      
+      // 圆角矩形背景
+      const radius = size * 0.2;
+      ctx.beginPath();
+      ctx.roundRect(0, 0, size, size, radius);
+      ctx.fillStyle = gradient;
+      ctx.fill();
+      
+      // 图标设置
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = Math.max(1, size * 0.06);
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      
+      // 内边距
+      const padding = size * 0.22;
+      const x1 = padding;
+      const y1 = padding;
+      const x2 = size - padding;
+      const y2 = size - padding;
+      
+      // 绘制外框
+      ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+      
+      // 绘制中间分割线
+      const midX = size / 2;
+      ctx.beginPath();
+      ctx.moveTo(midX, y1);
+      ctx.lineTo(midX, y2);
+      ctx.stroke();
+    }
+    
+    function download(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      const link = document.createElement('a');
+      link.download = canvasId + '.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+    
+    function downloadAll() {
+      ['icon16', 'icon48', 'icon128'].forEach((id, index) => {
+        setTimeout(() => download(id), index * 200);
+      });
+    }
+    
+    // 初始化绘制所有图标
+    ['icon16', 'icon48', 'icon128'].forEach(id => {
+      drawIcon(document.getElementById(id));
+    });
+  </script>
+</body>
+</html>
+

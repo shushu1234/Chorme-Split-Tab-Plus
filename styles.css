@@ -1,0 +1,26 @@
+/**
+ * Split Tab Plus - Global Styles
+ * 确保地址栏始终在页面最顶部
+ */
+
+#split-tab-plus-container {
+  display: block !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 2147483647 !important;
+  height: auto !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  pointer-events: auto !important;
+  transform: none !important;
+}
+
+/* 确保body有正确的margin来腾出空间 */
+html body {
+  transition: margin-top 0.2s ease !important;
+}
